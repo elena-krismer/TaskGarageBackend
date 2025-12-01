@@ -18,6 +18,9 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "TaskGarage API", Version = "v1" });
 });
 
+// AutoMapper
+builder.Services.AddAutoMapper(typeof(Program));
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
