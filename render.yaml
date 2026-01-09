@@ -1,0 +1,24 @@
+version: "1"
+projects:
+- name: TaskGarageBackend
+  environments:
+  - name: Production
+    services:
+    - type: web
+      name: TaskGarageBackend
+      runtime: docker
+      repo: https://github.com/elena-krismer/TaskGarageBackend
+      plan: starter
+      region: oregon
+      dockerContext: .
+      dockerfilePath: ./Dockerfile
+      autoDeployTrigger: commit
+      envVars:
+        - key: ASPNETCORE_ENVIRONMENT
+          value: Production
+        - key: ConnectionStrings__Default
+          value: Data Source=/app/data/taskgarage.db
+      disk:
+        name: taskgarage-data
+        mountPath: /app/data
+        sizeGB: 1
