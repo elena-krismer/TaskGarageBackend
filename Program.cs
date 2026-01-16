@@ -5,8 +5,11 @@ using Microsoft.OpenApi.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 // DbContext
+var dbPath = Path.Combine("/app/data", "taskgarageDB.db");
+
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlite("Data Source=taskgarageDB.db"));
+    options.UseSqlite($"Data Source={dbPath}"));
+
 
 // Controllers
 builder.Services.AddControllers();
@@ -26,7 +29,7 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    db.Database.Migrate();
+    db.Database.EnsureCreated();
 }
 
 app.UseRouting();
@@ -42,4 +45,5 @@ app.UseSwaggerUI(c =>
 app.MapControllers();
 
 app.Run();
+
 
