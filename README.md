@@ -135,6 +135,17 @@ curl -X POST http://localhost:5088/api/workorders \
   "resources": []
 }'
 
+curl -X POST https://taskgaragebackend-clf3.onrender.com/api/workorders \
+-H "Content-Type: application/json" \
+-d '{
+  "clientName": "John Doe",
+  "description": "Brake replacement",
+  "creationDate": "2025-12-01T10:00:00",
+  "status": 0,
+  "vehicleInfo": { "brand": "VW", "model": "Golf", "licensePlate": "AB-1234" },
+  "resources": []
+}'
+
 ```
 
 ## Using SQLite on Mobile
