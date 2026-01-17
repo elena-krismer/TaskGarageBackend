@@ -31,6 +31,7 @@ Running migrations
 dotnet ef migrations add InitialCreate
 dotnet ef database update
 ```
+![alt text](Diagrams/image.png)
 
 
 ## API Endpoints
@@ -91,6 +92,8 @@ Returns a specific work order.
 }
 ```
 
+![alt text](Diagrams/get.png)
+
 ### POST /api/workorders
 Creates a new work order
 
@@ -121,6 +124,8 @@ Response (201 Created)
 
 ```
 
+![alt text](Diagrams/createworkorder.png)
+
 ### Example CURL Request
 Create a work order.
 ```
@@ -150,3 +155,8 @@ curl -X POST https://taskgaragebackend-clf3.onrender.com/api/workorders \
 
 ## Using SQLite on Mobile
 When running the API on a phone `taskgarage.db`is created inside the app`s sandboxed storage.
+
+
+## Domainmodell 
+
+![alt text](Diagrams/Domanenmodell.png)
