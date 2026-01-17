@@ -3,3 +3,11 @@
 /bin
 /obj
 /taskgaragedb.db
+# SQLite databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Build outputs
+bin/
+obj/
