@@ -126,7 +126,75 @@ Response (201 Created)
 
 ![alt text](Diagrams/createworkorder.png)
 
+# PUT — Full Update
+Endpoint
+PUT /api/workorders/{id}
+
+Purpose
+
+Updates a work order by replacing its editable fields using a full data object.
+
+Request Body
+
+WorkOrderPutDto (JSON)
+
+Example Request
+```bash
+curl -X PUT "http://localhost:5088/api/workorders/5" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "clientName": "John Doe",
+    "description": "Brake replacement",
+    "status": 1,
+    "vehicleInfo": {
+      "brand": "BMW",
+      "model": "X3",
+      "licensePlate": "ZH-12345",
+      "year": 2020,
+      "mileage": 40000
+    },
+    "resources": [
+      { "name": "Brake pads", "type": "Part", "quantity": 1, "cost": 120.00 },
+      { "name": "Brake fluid", "type": "Material", "quantity": 1, "cost": 25.00 }
+    ]
+  }'
+
+```
+
+Responses
+Status	Meaning
+200 OK	Work order successfully updated
+404 Not Found	Work order ID does not exist
+
+## PATCH — Partial Update
+Endpoint
+PATCH /api/workorders/{id}
+
+Purpose
+
+Updates only selected fields of a work order.
+
+Request Body
+
+WorkOrderUpdateDto
+
+Example Request
+```bash
+curl -X PATCH "http://localhost:5088/api/workorders/5" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "status": 2,
+    "description": "Repair completed successfully"
+  }'
+```
+
+Responses
+Status	Meaning
+200 OK	Work order successfully updated
+404 Not Found	Work order ID does not exist
+
 ### Example CURL Request
+
 Create a work order.
 ```
 curl -X POST http://localhost:5088/api/workorders \
