@@ -80,6 +80,22 @@ namespace TaskGarageBackend.Controllers
         return Ok(_mapper.Map<WorkOrderReadDto>(workOrder));
     }
 
+    // DELETE: api/workorders/5
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteWorkOrder(int id)
+    {
+        var workOrder = await _context.WorkOrders.FindAsync(id);
+    
+        if (workOrder == null)
+            return NotFound();
+    
+        _context.WorkOrders.Remove(workOrder);
+        await _context.SaveChangesAsync();
+    
+        return NoContent(); // 204
+    }
+
+
     [HttpPatch("{id}")]
     public async Task<IActionResult> PatchWorkOrder(int id, WorkOrderUpdateDto dto)
         {
