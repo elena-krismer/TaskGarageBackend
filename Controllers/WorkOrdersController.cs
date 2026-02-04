@@ -22,7 +22,7 @@ namespace TaskGarageBackend.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateWorkOrder(WorkOrderCreateDto dto)
+        public async Task<IActionResult> CreateWorkOrder([FromBody] WorkOrderCreateDto dto)
         {
             var workOrder = _mapper.Map<WorkOrder>(dto);
 
@@ -63,7 +63,7 @@ namespace TaskGarageBackend.Controllers
 
     // PUT: api/workorders/5
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateWorkOrder(int id,  WorkOrderPutDto dto)
+    public async Task<IActionResult> UpdateWorkOrder(int id, [FromBody] WorkOrderPutDto dto)
     {
         var workOrder = await _context.WorkOrders
             .Include(w => w.VehicleInfo)
@@ -97,7 +97,7 @@ namespace TaskGarageBackend.Controllers
 
 
     [HttpPatch("{id}")]
-    public async Task<IActionResult> PatchWorkOrder(int id, WorkOrderUpdateDto dto)
+    public async Task<IActionResult> PatchWorkOrder(int id, [FromBody] WorkOrderUpdateDto dto)
         {
             var workOrder = await _context.WorkOrders
                 .Include(w => w.VehicleInfo)
