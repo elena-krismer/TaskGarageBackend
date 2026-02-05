@@ -9,27 +9,31 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
     permissions:
-      id-token: write   # needed for OIDC azure/login
+      id-token: write
       contents: read
 
     steps:
       - uses: actions/checkout@v4
 
-      # Login to Azure using the same OIDC secrets you already have
-      - name: Login to Azure
-        uses: azure/login@v2
+      # Choose ONE login method:
+
+      # (A) OIDC (requires federated credential configured in Entra)
+      # - uses: azure/login@v2
+      #   with:
+      #     client-id: ${{ secrets.AZURE_CLIENT_ID }}
+      #     tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+      #     subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      # (B) Client secret JSON (fastest to unblock)
+      - uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_2B3CDC3696034D35B487EEC91E42092F }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_A37FDF42755B4D52958DB3637527C8F8 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_0DD31788D5F547FA86F8B8BC8D71FAF3 }}
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      # Login Docker to your Azure Container Registry
       - name: Login to ACR
-        run: az acr login --name ${{ secrets.ACR_LOGIN_SERVER }}
+        run: az acr login --name ${{ secrets.ACR_NAME }}
 
-      # Build and push
-      - name: Build Docker image
+      - name: Build image
         run: docker build -t ${{ secrets.ACR_LOGIN_SERVER }}/taskgaragebackend:latest .
 
-      - name: Push Docker image
+      - name: Push image
         run: docker push ${{ secrets.ACR_LOGIN_SERVER }}/taskgaragebackend:latest
