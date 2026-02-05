@@ -30,12 +30,13 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
           
       - name: Login to ACR
-        run: az acr login --name ${{ secrets.ACR_NAME }}
+        run: az acr login --name taskgarageregistry
       
       - name: Build image
-        run: docker build -t ${{ secrets.ACR_LOGIN_SERVER }}/taskgaragebackend:latest .
+        run: docker build -t taskgarageregistry.azurecr.io/taskgaragebackend:latest .
       
       - name: Push image
-        run: docker push ${{ secrets.ACR_LOGIN_SERVER }}/taskgaragebackend:latest
+        run: docker push taskgarageregistry.azurecr.io/taskgaragebackend:latest
+
 
 
