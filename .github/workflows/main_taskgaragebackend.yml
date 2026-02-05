@@ -1,26 +1,35 @@
-name: Build and Push Docker Image
+name: Build and push Docker image to ACR
 
 on:
   push:
     branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
-  build:
+  build-and-push:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write   # needed for OIDC azure/login
+      contents: read
 
     steps:
       - uses: actions/checkout@v4
 
+      # Login to Azure using the same OIDC secrets you already have
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_2B3CDC3696034D35B487EEC91E42092F }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_A37FDF42755B4D52958DB3637527C8F8 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_0DD31788D5F547FA86F8B8BC8D71FAF3 }}
 
+      # Login Docker to your Azure Container Registry
       - name: Login to ACR
-        run: az acr login --name taskgaragebackend
+        run: az acr login --name ${{ secrets.ACR_LOGIN_SERVER }}
 
+      # Build and push
       - name: Build Docker image
-        run: docker build -t taskgaragebackend.azurecr.io/taskgaragebackend:latest .
+        run: docker build -t ${{ secrets.ACR_LOGIN_SERVER }}/taskgaragebackend:latest .
 
       - name: Push Docker image
-        run: docker push taskgaragebackend.azurecr.io/taskgaragebackend:latest
+        run: docker push ${{ secrets.ACR_LOGIN_SERVER }}/taskgaragebackend:latest
